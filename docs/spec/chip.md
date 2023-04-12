@@ -748,7 +748,7 @@ Software implementations might choose to emphasize circulating supply (rather th
 
 ## Test Vectors
 
-Sets of cross-implementation test vectors are provided in the [`test-vectors`](./test-vectors/) directory. Each set is described below.
+Sets of cross-implementation test vectors are provided in the [`test-vectors`](https://github.com/bitjson/cashtokens/tree/master/test-vectors) directory. Each set is described below.
 
 ### Token-Aware CashAddress Test Vectors
 
@@ -764,7 +764,7 @@ A complete set of test vectors that validate token encoding can be found in [`te
 
 ### Transaction Validation Test Vectors
 
-The [`test-vectors/vmb_tests`](./test-vectors/vmb_tests/) directory contains sets of transaction test vectors that validate all technical elements of this proposal.
+The [`test-vectors/vmb_tests`](https://github.com/bitjson/cashtokens/tree/master/test-vectors/vmb_tests/) directory contains sets of transaction test vectors that validate all technical elements of this proposal.
 
 To maximize portability between implementations, these test vectors use Libauth's [full-transaction testing strategy](https://github.com/bitauth/libauth/blob/43914ca973e90dfc84b6173dcace7233f8c2e05c/src/lib/vmb-tests/readme.md). Test vectors are sorted into files based on their expected behavior:
 
