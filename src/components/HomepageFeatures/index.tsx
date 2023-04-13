@@ -15,17 +15,17 @@ const FeatureList: FeatureItem[] = [
         CashTokens are digital assets created on Bitcoin Cash. CashToken
         transactions are highly-efficient and validated in parallel, so
         transaction fees are <strong>less than $0.01</strong>, even during
-        periods of high network usage.
+        periods of high&nbsp;network&nbsp;usage.
       </>
     ),
   },
   {
-    title: 'Widespread Support',
+    title: 'Widespread Compatibility',
     description: (
       <>
         CashTokens are the built-in token system of the global, decentralized
-        Bitcoin Cash network. CashTokens are supported by a growing number of
-        wallets, services, tools, and companies.
+        Bitcoin Cash network. CashTokens are compatible across a growing number
+        of wallets, services, companies, tools, and&nbsp;protocols.
       </>
     ),
   },
@@ -35,7 +35,7 @@ const FeatureList: FeatureItem[] = [
       <>
         CashTokens enable developers to build on-chain, decentralized
         applications like crowdfunding systems, trading protocols, decentralized
-        exchanges (DEXs), cross-chain bridges, and more.
+        exchanges (DEXs), cross-chain bridges, and&nbsp;more.
       </>
     ),
   },

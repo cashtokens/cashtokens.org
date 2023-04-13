@@ -82,6 +82,7 @@ const config = {
           //   position: 'left',
           //   label: 'Docs',
           // },
+          { to: '/docs/intro', label: 'Intro', position: 'left' },
           { to: '/docs/spec/chip', label: 'Specification', position: 'left' },
           {
             href: 'https://github.com/cashtokens/cashtokens.org',
@@ -95,6 +96,10 @@ const config = {
           {
             title: 'Docs',
             items: [
+              {
+                label: 'Introduction',
+                to: '/docs/intro',
+              },
               {
                 label: 'CashTokens CHIP',
                 to: '/docs/spec/chip',

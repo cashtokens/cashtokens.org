@@ -1,6 +1,6 @@
 {
   "label": "CashTokens CHIP",
-  "position": 1,
+  "position": 2,
   "link": {
     "type": "generated-index",
     "description": "The Bitcoin Cash Improvement Proposal (CHIP) specifying the CashTokens upgrade."

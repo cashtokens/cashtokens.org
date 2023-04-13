@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 # Metadata Registries CHIP
 
         Title: Bitcoin Cash Metadata Registries
