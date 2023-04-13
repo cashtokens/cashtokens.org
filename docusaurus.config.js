@@ -128,7 +128,7 @@ const config = {
             ],
           },
           {
-            title: 'More',
+            title: 'Other Resources',
             items: [
               {
                 label: 'Why Bitcoin Cash?',

@@ -15,8 +15,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  doc:
-    name: Generate API Docs
+  build-and-deploy:
+    name: Build & Deploy Website
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
