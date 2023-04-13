@@ -67,7 +67,7 @@ const config = {
         respectPrefersColorScheme: true,
       },
       // Replace with your project's social card
-      image: 'img/cashtokens-social-card.jpg',
+      image: 'img/cashtokens-social-card.png',
       navbar: {
         style: 'dark',
         title: '',
