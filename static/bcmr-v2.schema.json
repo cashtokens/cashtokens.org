@@ -129,162 +129,154 @@
           "type": "array"
         },
         "token": {
-          "additionalProperties": false,
-          "description": "If this identity is a type of token, a data structure indicating how tokens should be displayed in user interfaces. Omitted for non-token identities.",
-          "properties": {
-            "category": {
-              "description": "The current token category used by this identity. Often, this will be equal to the identity's authbase, but some token identities must migrate to new categories for technical reasons.",
-              "type": "string"
-            },
-            "decimals": {
-              "description": "An integer between `0` and `18` (inclusive) indicating the divisibility of the primary unit of this token category.\n\nThis is the number of digits that can appear after the decimal separator in fungible token amounts. For a token category with a `symbol` of `SYMBOL` and a `decimals` of `2`, a fungible token amount of `12345` should be displayed as `123.45 SYMBOL`.\n\nIf omitted, defaults to `0`.",
-              "type": "number"
-            },
-            "nfts": {
-              "additionalProperties": false,
-              "description": "Display information for non-fungible tokens (NFTs) of this identity. Omitted for token categories without NFTs.",
-              "properties": {
-                "description": {
-                  "description": "A string describing how this identity uses NFTs (for use in user interfaces). Descriptions longer than `160` characters may be elided in some interfaces.\n\nE.g.:\n- \"ACME DEX NFT order receipts are issued when you place orders on the decentralized exchange. After orders are processed, order receipts can be redeemed for purchased tokens or sales proceeds.\";\n- \"ACME Game collectable NFTs unlock unique playable content, user avatars, and item skins in ACME Game Online.\"; etc.",
-                  "type": "string"
-                },
-                "fields": {
-                  "additionalProperties": {
-                    "additionalProperties": false,
-                    "properties": {
-                      "description": {
-                        "description": "A string describing how this identity uses NFTs (for use in user interfaces). Descriptions longer than `160` characters may be elided in some interfaces.\n\nE.g.:\n- `The BCH value pledged at the time this receipt was issued.`\n- `The number of tokens sold in this order.`\n- `The seat number associated with this ticket.`",
-                        "type": "string"
-                      },
-                      "encoding": {
-                        "anyOf": [
-                          {
-                            "additionalProperties": false,
-                            "properties": {
-                              "type": {
-                                "enum": [
-                                  "binary",
-                                  "boolean",
-                                  "hex",
-                                  "https-url",
-                                  "ipfs-cid",
-                                  "utf8",
-                                  "locktime"
-                                ],
-                                "type": "string"
-                              }
-                            },
-                            "required": ["type"],
-                            "type": "object"
-                          },
-                          {
-                            "additionalProperties": false,
-                            "properties": {
-                              "aggregate": {
-                                "const": "add",
-                                "description": "The `aggregate` property indicates that aggregating this field from multiple NFTs is desirable in user interfaces. For example, for a field named `BCH Pledged` where `aggregate` is `add`, the client can display a `Total BCH Pledged` in any user interface listing more than one NFT.\n\nIf specified, clients should aggregate the field from all NFTs within a view (e.g. NFTs held by a single wallet, NFTs existing in a single transaction's outputs, etc.) using the specified operation. Note, while aggregation could be performed using any commutative operation – multiplication, bitwise AND, bitwise OR, and bitwise XOR, etc. – only `add` is currently supported.",
-                                "type": "string"
-                              },
-                              "decimals": {
-                                "description": "An integer between `0` and `18` (inclusive) indicating the divisibility of the primary unit of this token field.\n\nThis is the number of digits that can appear after the decimal separator in amounts. For a field with a `decimals` of `2`, a value of `123456` should be displayed as `1234.56`.\n\nIf omitted, defaults to `0`.",
-                                "type": "number"
-                              },
-                              "type": {
-                                "const": "number",
-                                "type": "string"
-                              },
-                              "unit": {
-                                "description": "The unit in which this field is denominated, taking the `decimals` value into account. If representing fungible token amount, this will often be the symbol of the represented token category.\n\nE.g. `BCH`, `sats`, `AcmeUSD`, etc.\n\nIf not provided, clients should not represent this field as having a unit beyond the field's `name`.",
-                                "type": "string"
-                              }
-                            },
-                            "required": ["type"],
-                            "type": "object"
-                          }
-                        ],
-                        "description": "The expected encoding of this field when read from the parsing altstack (see `token.nft.parse`). All encoding definitions must have a `type`, and some encoding definitions allow for additional hinting about display strategies in clients.\n\nEncoding types may be set to `binary`, `boolean`, `hex`, `number`, or `utf8`:\n\n- `binary` types should be displayed as binary literals (e.g. `0b0101`)\n- `boolean` types should be displayed as `true` if exactly `0x01` or `false` if exactly `0x00`. If a boolean value does not match one of these values, clients should represent the NFT as unable to be parsed (e.g. simply display the full `commitment`).\n- `hex` types should be displayed as hex literals (e.g.`0xabcd`).\n- `https-url` types are percent encoded with the `https://` prefix omitted; they may be displayed as URIs or as activatable links.\n- `ipfs-cid` types are binary-encoded IPFS Content Identifiers; they may be displayed as URIs or as activatable links.\n- `locktime` types are `OP_TXLOCKTIME` results: integers from `0` to `4294967295` (inclusive) where values less than `500000000` are understood to be a block height (the current block number in the chain, beginning from block `0`), and values greater than or equal to `500000000` are understood to be a Median Time Past (BIP113) UNIX timestamp. (Note, sequence age is not currently supported.)\n- `number` types should be displayed according the their configured `decimals` and `unit` values.\n- `utf8` types should be displayed as utf8 strings."
-                      },
-                      "extensions": {
-                        "$ref": "#/definitions/Extensions",
-                        "description": "A mapping of NFT field extension identifiers to extension definitions.  {@link  Extensions }  may be widely standardized or application-specific."
-                      },
-                      "name": {
-                        "description": "The name of this field for use in interfaces. Names longer than `20` characters may be elided in some interfaces.\n\nE.g.:\n- `BCH Pledged`\n- `Tokens Sold`\n- `Seat Number`,\n- `IPFS Content Identifier`\n- `HTTPS URL`",
-                        "type": "string"
-                      },
-                      "uris": {
-                        "$ref": "#/definitions/URIs",
-                        "description": "A mapping of identifiers to URIs associated with this NFT field. URI identifiers may be widely-standardized or registry-specific. Values must be valid URIs, including a protocol prefix (e.g. `https://` or `ipfs://`). Clients are only required to support `https` and `ipfs` URIs, but any scheme may be specified."
-                      }
-                    },
-                    "required": ["encoding"],
-                    "type": "object"
-                  },
-                  "description": "A mapping of field identifier to field definitions for the data fields that can appear in NFT commitments of this category.",
-                  "type": "object"
-                },
-                "parse": {
-                  "additionalProperties": false,
-                  "description": "Parsing and interpretation information for all NFTs of this category; this enables generalized wallets to parse and display detailed information about all NFTs held by the wallet, e.g. `BCH Pledged`, `Order Price`, `Seat Number`, `Asset Number`, `IPFS Content Identifier`, `HTTPS URL`, etc.\n\nParsing instructions are provided in the `bytecode` property, and the results are interpreted using the `types` property.",
-                  "properties": {
-                    "bytecode": {
-                      "description": "A segment of hex-encoded Bitcoin Cash VM bytecode that parses UTXOs holding NFTs of this category, identifies the NFT's type within the category, and returns a list of the NFT's field values via the altstack.\n\nThe parse `bytecode` is evaluated by instantiating and partially verifying a standardized NFT parsing transaction:\n- version: `2`\n- inputs:   - 0: Spends the UTXO containing the NFT with an empty   unlocking bytecode and sequence number of `0`.   - 1: Spends index `0` of the empty hash outpoint, with locking   bytecode set to `parse.bytecode`, unlocking bytecode `OP_1`   (`0x51`) and sequence number `0`.\n- outputs:   - 0: A locking bytecode of OP_RETURN (`0x6a`) and value of `0`.\n- locktime: `0`\n\nAfter input 1 of this NFT parsing transaction is evaluated, if the resulting stack is not valid (a single \"truthy\" element remaining on the stack) – or if the altstack is empty – parsing has failed and clients should represent the NFT as unable to be parsed (e.g. simply display the full `commitment` as a hex-encoded value in the user interface).\n\nOn successful parsing evaluations, the bottom item on the altstack indicates the type of the NFT according to the matching definition in `types`. If no match is found, clients should represent the NFT as unable to be parsed.\n\nFor example:\n- `00d26b` (OP_0 OP_UTXOTOKENCOMMITMENT OP_TOALTSTACK) takes the full contents of the commitment as a fixed type; this can be used for collections of unique, \"numbered\" NFTs. (Commitments of `01`, `02`, `03`, etc.)\n- `00d2517f7c6b` (OP_0 OP_UTXOTOKENCOMMITMENT OP_1 OP_SPLIT OP_SWAP OP_TOALTSTACK OP_TOALTSTACK) splits the commitment after 1 byte, pushing the first byte to the altstack as an NFT type and the remaining segment of the commitment as the first NFT field value.",
-                      "type": "string"
-                    },
-                    "types": {
-                      "additionalProperties": {
-                        "additionalProperties": false,
-                        "description": "A definition for one type of NFT within a token category. NFT types are indexed by the expected hex-encoded value of the bottom altstack item following evaluation of `token.nft.parse.bytecode`. The remaining altstack items are mapped to NFT fields according to the `fields` property of the matching NFT type.",
-                        "properties": {
-                          "description": {
-                            "description": "A string describing this NFT type for use in user interfaces.\n\nIn user interfaces with limited space, names should be hidden beyond the first newline character or `140` characters until revealed by the user.\n\nE.g.:\n- \"Receipts issued by the exchange to record details about purchases. After settlement, these receipts are redeemed for the purchased tokens.\";\n- \"Receipts issued by the crowdfunding campaign to document the value of funds pledged. If the user decides to cancel their pledge before the campaign completes, these receipts can be redeemed for a full refund.\";\n- \"Tickets issued for events at ACME Stadium.\";\n- Sealed ballots certified by ACME decentralized organization during the voting period. After the voting period ends, these ballots must be revealed to reclaim the tokens used for voting.\"",
-                            "type": "string"
-                          },
-                          "extensions": {
-                            "$ref": "#/definitions/Extensions",
-                            "description": "A mapping of NFT type extension identifiers to extension definitions.  {@link  Extensions }  may be widely standardized or application-specific."
-                          },
-                          "fields": {
-                            "description": "A list of identifiers for fields contained in NFTs of this type. On successful parsing evaluations, the bottom item on the altstack indicates the matched NFT type, and the remaining altstack items represent NFT field contents in the order listed (where `fields[0]` is the second-to-bottom item, and the final item in `fields` is the top of the altstack).\n\nFields should be ordered by recommended importance from most important to least important; in user interfaces, clients should display fields at lower indexes more prominently than those at higher indexes, e.g. if some fields cannot be displayed in minimized interfaces, higher-importance fields can still be represented. (Note, this ordering is controlled by the bytecode specified in `token.nft.parse.bytecode`.)",
-                            "items": {
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "name": {
-                            "description": "The name of this NFT type for use in interfaces. Names longer than `20` characters may be elided in some interfaces.\n\nE.g. `Market Order Buys`, `Limit Order Sales`, `Pledge Receipts`, `ACME Stadium Tickets`, `Sealed Votes`, etc.",
-                            "type": "string"
-                          },
-                          "uris": {
-                            "$ref": "#/definitions/URIs",
-                            "description": "A mapping of identifiers to URIs associated with this NFT type. URI identifiers may be widely-standardized or registry-specific. Values must be valid URIs, including a protocol prefix (e.g. `https://` or `ipfs://`). Clients are only required to support `https` and `ipfs` URIs, but any scheme may be specified."
-                          }
-                        },
-                        "required": ["name", "fields"],
-                        "type": "object"
-                      },
-                      "description": "A mapping of hex-encoded values to definitions of possible NFT types in this category.",
-                      "type": "object"
-                    }
-                  },
-                  "required": ["bytecode", "types"],
-                  "type": "object"
-                }
-              },
-              "required": ["parse"],
-              "type": "object"
-            },
-            "symbol": {
-              "description": "An abbreviation used to uniquely identity this token category.\n\nSymbols must be comprised only of capital letters, numbers, and dashes (`-`). This can be validated with the regular expression: `/^[-A-Z0-9]+$/`.",
-              "type": "string"
-            }
-          },
-          "required": ["category", "symbol"],
-          "type": "object"
+          "$ref": "#/definitions/TokenCategory",
+          "description": "If this identity is a type of token, a data structure indicating how tokens should be understood and displayed in user interfaces. Omitted for non-token identities."
         },
         "uris": {
           "$ref": "#/definitions/URIs",
           "description": "A mapping of identifiers to URIs associated with this identity. URI identifiers may be widely-standardized or registry-specific. Values must be valid URIs, including a protocol prefix (e.g. `https://` or `ipfs://`). Clients are only required to support `https` and `ipfs` URIs, but any scheme may be specified.\n\nThe following identifiers are recommended for all identities:\n- `icon`\n- `web`\n\nThe following optional identifiers are standardized:\n- `blog`\n- `chat`\n- `forum`\n- `icon-intro`\n- `registry`\n- `support`\n\nFor details on these standard identifiers, see: https://github.com/bitjson/chip-bcmr#uri-identifiers\n\nCustom URI identifiers allow for sharing social networking profiles, p2p connection information, and other application-specific URIs. Identifiers must be lowercase, alphanumeric strings, with no whitespace or special characters other than dashes (as a regular expression: `/^[-a-z0-9]+$/`).\n\nFor example, some common identifiers include: `discord`, `docker`, `facebook`, `git`, `github`, `gitter`, `instagram`, `linkedin`, `matrix`, `npm`, `reddit`, `slack`, `substack`, `telegram`, `twitter`, `wechat`, `youtube`."
+        }
+      },
+      "required": ["name"],
+      "type": "object"
+    },
+    "NftCategory": {
+      "additionalProperties": false,
+      "description": "A definition specifying the non-fungible token information for a token category.",
+      "properties": {
+        "description": {
+          "description": "A string describing how this identity uses NFTs (for use in user interfaces). Descriptions longer than `160` characters may be elided in some interfaces.\n\nE.g.:\n- \"ACME DEX NFT order receipts are issued when you place orders on the decentralized exchange. After orders are processed, order receipts can be redeemed for purchased tokens or sales proceeds.\";\n- \"ACME Game collectable NFTs unlock unique playable content, user avatars, and item skins in ACME Game Online.\"; etc.",
+          "type": "string"
+        },
+        "fields": {
+          "$ref": "#/definitions/NftCategoryField",
+          "description": "A mapping of field identifier to field definitions for the data fields that can appear in NFT commitments of this category."
+        },
+        "parse": {
+          "additionalProperties": false,
+          "description": "Parsing and interpretation information for all NFTs of this category; this enables generalized wallets to parse and display detailed information about all NFTs held by the wallet, e.g. `BCH Pledged`, `Order Price`, `Seat Number`, `Asset Number`, `IPFS Content Identifier`, `HTTPS URL`, etc.\n\nParsing instructions are provided in the `bytecode` property, and the results are interpreted using the `types` property.",
+          "properties": {
+            "bytecode": {
+              "description": "A segment of hex-encoded Bitcoin Cash VM bytecode that parses UTXOs holding NFTs of this category, identifies the NFT's type within the category, and returns a list of the NFT's field values via the altstack.\n\nThe parse `bytecode` is evaluated by instantiating and partially verifying a standardized NFT parsing transaction:\n- version: `2`\n- inputs:   - 0: Spends the UTXO containing the NFT with an empty   unlocking bytecode and sequence number of `0`.   - 1: Spends index `0` of the empty hash outpoint, with locking   bytecode set to `parse.bytecode`, unlocking bytecode `OP_1`   (`0x51`) and sequence number `0`.\n- outputs:   - 0: A locking bytecode of OP_RETURN (`0x6a`) and value of `0`.\n- locktime: `0`\n\nAfter input 1 of this NFT parsing transaction is evaluated, if the resulting stack is not valid (a single \"truthy\" element remaining on the stack) – or if the altstack is empty – parsing has failed and clients should represent the NFT as unable to be parsed (e.g. simply display the full `commitment` as a hex-encoded value in the user interface).\n\nOn successful parsing evaluations, the bottom item on the altstack indicates the type of the NFT according to the matching definition in `types`. If no match is found, clients should represent the NFT as unable to be parsed.\n\nFor example:\n- `00d26b` (OP_0 OP_UTXOTOKENCOMMITMENT OP_TOALTSTACK) takes the full contents of the commitment as a fixed type; this can be used for collections of unique, \"numbered\" NFTs. (Commitments of `01`, `02`, `03`, etc.)\n- `00d2517f7c6b` (OP_0 OP_UTXOTOKENCOMMITMENT OP_1 OP_SPLIT OP_SWAP OP_TOALTSTACK OP_TOALTSTACK) splits the commitment after 1 byte, pushing the first byte to the altstack as an NFT type and the remaining segment of the commitment as the first NFT field value.",
+              "type": "string"
+            },
+            "types": {
+              "additionalProperties": {
+                "$ref": "#/definitions/NftType",
+                "description": "A definitions for each type of NFT within the token category. NFT types are indexed by the expected hex-encoded value of the bottom altstack item following evaluation of `token.nfts.parse.bytecode`. The remaining altstack items are mapped to NFT fields according to the `fields` property of the matching NFT type."
+              },
+              "description": "A mapping of hex-encoded values to definitions of possible NFT types in this category.",
+              "type": "object"
+            }
+          },
+          "required": ["bytecode", "types"],
+          "type": "object"
+        }
+      },
+      "required": ["parse"],
+      "type": "object"
+    },
+    "NftCategoryField": {
+      "additionalProperties": {
+        "additionalProperties": false,
+        "properties": {
+          "description": {
+            "description": "A string describing how this identity uses NFTs (for use in user interfaces). Descriptions longer than `160` characters may be elided in some interfaces.\n\nE.g.:\n- `The BCH value pledged at the time this receipt was issued.`\n- `The number of tokens sold in this order.`\n- `The seat number associated with this ticket.`",
+            "type": "string"
+          },
+          "encoding": {
+            "anyOf": [
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "binary",
+                      "boolean",
+                      "hex",
+                      "https-url",
+                      "ipfs-cid",
+                      "utf8",
+                      "locktime"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": ["type"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "aggregate": {
+                    "const": "add",
+                    "description": "The `aggregate` property indicates that aggregating this field from multiple NFTs is desirable in user interfaces. For example, for a field named `BCH Pledged` where `aggregate` is `add`, the client can display a `Total BCH Pledged` in any user interface listing more than one NFT.\n\nIf specified, clients should aggregate the field from all NFTs within a view (e.g. NFTs held by a single wallet, NFTs existing in a single transaction's outputs, etc.) using the specified operation. Note, while aggregation could be performed using any commutative operation – multiplication, bitwise AND, bitwise OR, and bitwise XOR, etc. – only `add` is currently supported.",
+                    "type": "string"
+                  },
+                  "decimals": {
+                    "description": "An integer between `0` and `18` (inclusive) indicating the divisibility of the primary unit of this token field.\n\nThis is the number of digits that can appear after the decimal separator in amounts. For a field with a `decimals` of `2`, a value of `123456` should be displayed as `1234.56`.\n\nIf omitted, defaults to `0`.",
+                    "type": "number"
+                  },
+                  "type": {
+                    "const": "number",
+                    "type": "string"
+                  },
+                  "unit": {
+                    "description": "The unit in which this field is denominated, taking the `decimals` value into account. If representing fungible token amount, this will often be the symbol of the represented token category.\n\nE.g. `BCH`, `sats`, `AcmeUSD`, etc.\n\nIf not provided, clients should not represent this field as having a unit beyond the field's `name`.",
+                    "type": "string"
+                  }
+                },
+                "required": ["type"],
+                "type": "object"
+              }
+            ],
+            "description": "The expected encoding of this field when read from the parsing altstack (see `token.nft.parse`). All encoding definitions must have a `type`, and some encoding definitions allow for additional hinting about display strategies in clients.\n\nEncoding types may be set to `binary`, `boolean`, `hex`, `number`, or `utf8`:\n\n- `binary` types should be displayed as binary literals (e.g. `0b0101`)\n- `boolean` types should be displayed as `true` if exactly `0x01` or `false` if exactly `0x00`. If a boolean value does not match one of these values, clients should represent the NFT as unable to be parsed (e.g. simply display the full `commitment`).\n- `hex` types should be displayed as hex literals (e.g.`0xabcd`).\n- `https-url` types are percent encoded with the `https://` prefix omitted; they may be displayed as URIs or as activatable links.\n- `ipfs-cid` types are binary-encoded IPFS Content Identifiers; they may be displayed as URIs or as activatable links.\n- `locktime` types are `OP_TXLOCKTIME` results: integers from `0` to `4294967295` (inclusive) where values less than `500000000` are understood to be a block height (the current block number in the chain, beginning from block `0`), and values greater than or equal to `500000000` are understood to be a Median Time Past (BIP113) UNIX timestamp. (Note, sequence age is not currently supported.)\n- `number` types should be displayed according the their configured `decimals` and `unit` values.\n- `utf8` types should be displayed as utf8 strings."
+          },
+          "extensions": {
+            "$ref": "#/definitions/Extensions",
+            "description": "A mapping of NFT field extension identifiers to extension definitions.  {@link  Extensions }  may be widely standardized or application-specific."
+          },
+          "name": {
+            "description": "The name of this field for use in interfaces. Names longer than `20` characters may be elided in some interfaces.\n\nE.g.:\n- `BCH Pledged`\n- `Tokens Sold`\n- `Seat Number`,\n- `IPFS Content Identifier`\n- `HTTPS URL`",
+            "type": "string"
+          },
+          "uris": {
+            "$ref": "#/definitions/URIs",
+            "description": "A mapping of identifiers to URIs associated with this NFT field. URI identifiers may be widely-standardized or registry-specific. Values must be valid URIs, including a protocol prefix (e.g. `https://` or `ipfs://`). Clients are only required to support `https` and `ipfs` URIs, but any scheme may be specified."
+          }
+        },
+        "required": ["encoding"],
+        "type": "object"
+      },
+      "description": "A definition specifying a field that can be encoded in non-fungible tokens of a token category.",
+      "type": "object"
+    },
+    "NftType": {
+      "additionalProperties": false,
+      "description": "A definition for one type of NFT within a token category.",
+      "properties": {
+        "description": {
+          "description": "A string describing this NFT type for use in user interfaces.\n\nIn user interfaces with limited space, names should be hidden beyond the first newline character or `140` characters until revealed by the user.\n\nE.g.:\n- \"Receipts issued by the exchange to record details about purchases. After settlement, these receipts are redeemed for the purchased tokens.\";\n- \"Receipts issued by the crowdfunding campaign to document the value of funds pledged. If the user decides to cancel their pledge before the campaign completes, these receipts can be redeemed for a full refund.\";\n- \"Tickets issued for events at ACME Stadium.\";\n- Sealed ballots certified by ACME decentralized organization during the voting period. After the voting period ends, these ballots must be revealed to reclaim the tokens used for voting.\"",
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/definitions/Extensions",
+          "description": "A mapping of NFT type extension identifiers to extension definitions.  {@link  Extensions }  may be widely standardized or application-specific."
+        },
+        "fields": {
+          "description": "A list of identifiers for fields contained in NFTs of this type. On successful parsing evaluations, the bottom item on the altstack indicates the matched NFT type, and the remaining altstack items represent NFT field contents in the order listed (where `fields[0]` is the second-to-bottom item, and the final item in `fields` is the top of the altstack).\n\nFields should be ordered by recommended importance from most important to least important; in user interfaces, clients should display fields at lower indexes more prominently than those at higher indexes, e.g. if some fields cannot be displayed in minimized interfaces, higher-importance fields can still be represented. (Note, this ordering is controlled by the bytecode specified in `token.nft.parse.bytecode`.)",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "name": {
+          "description": "The name of this NFT type for use in interfaces. Names longer than `20` characters may be elided in some interfaces.\n\nE.g. `Market Order Buys`, `Limit Order Sales`, `Pledge Receipts`, `ACME Stadium Tickets`, `Sealed Votes`, etc.",
+          "type": "string"
+        },
+        "uris": {
+          "$ref": "#/definitions/URIs",
+          "description": "A mapping of identifiers to URIs associated with this NFT type. URI identifiers may be widely-standardized or registry-specific. Values must be valid URIs, including a protocol prefix (e.g. `https://` or `ipfs://`). Clients are only required to support `https` and `ipfs` URIs, but any scheme may be specified."
         }
       },
       "required": ["name"],
@@ -406,6 +398,30 @@
         }
       },
       "required": ["name"],
+      "type": "object"
+    },
+    "TokenCategory": {
+      "additionalProperties": false,
+      "description": "A definition specifying information about an identity's token category.",
+      "properties": {
+        "category": {
+          "description": "The current token category used by this identity. Often, this will be equal to the identity's authbase, but some token identities must migrate to new categories for technical reasons.",
+          "type": "string"
+        },
+        "decimals": {
+          "description": "An integer between `0` and `18` (inclusive) indicating the divisibility of the primary unit of this token category.\n\nThis is the number of digits that can appear after the decimal separator in fungible token amounts. For a token category with a `symbol` of `SYMBOL` and a `decimals` of `2`, a fungible token amount of `12345` should be displayed as `123.45 SYMBOL`.\n\nIf omitted, defaults to `0`.",
+          "type": "number"
+        },
+        "nfts": {
+          "$ref": "#/definitions/NftCategory",
+          "description": "Display information for non-fungible tokens (NFTs) of this identity. Omitted for token categories without NFTs."
+        },
+        "symbol": {
+          "description": "An abbreviation used to uniquely identity this token category.\n\nSymbols must be comprised only of capital letters, numbers, and dashes (`-`). This can be validated with the regular expression: `/^[-A-Z0-9]+$/`.",
+          "type": "string"
+        }
+      },
+      "required": ["category", "symbol"],
       "type": "object"
     },
     "URIs": {
