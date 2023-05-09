@@ -106,7 +106,7 @@ const config = {
               },
               {
                 label: 'Metadata Registries CHIP',
-                to: '/docs/bcmr',
+                to: '/docs/bcmr/chip',
               },
             ],
           },

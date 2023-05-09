@@ -1,0 +1,8 @@
+{
+  "label": "Metadata Registries CHIP",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "The Bitcoin Cash Improvement Proposal (CHIP) specifying the Bitcoin Cash Metadata Registries application standard."
+  }
+}
