@@ -1,5 +1,9 @@
+---
+sidebar_class_name: hidden
+---
+
 <meta
   http-equiv="refresh"
-  content="0; URL=https://cashtokens.org/docs/bcmr/chip"
+  content="0; URL=/docs/bcmr/chip"
 />
-<link rel="canonical" href="https://cashtokens.org/docs/bcmr/chip" />
+<link rel="canonical" href="/docs/bcmr/chip" />

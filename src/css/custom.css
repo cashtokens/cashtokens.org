@@ -27,6 +27,10 @@
   --ifm-navbar-background-color: #232829;
 }
 
+.hidden {
+  display: none;
+}
+
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
   --ifm-color-primary: #0AC18E;
