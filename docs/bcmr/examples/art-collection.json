@@ -24,9 +24,10 @@
               "types": {
                 "": {
                   "name": "Example #0",
-                  "description": "An NFT of this category with a zero-length on-chain commitment (VM number 0). Where appropriate, user interfaces may display the ticker symbol of NFTs matching this type as XAMPLZ-0.",
+                  "description": "An NFT of this category with a zero-length on-chain commitment (VM number 0). Where appropriate, user interfaces may display the ticker symbol of NFTs matching this type as XAMPLZ-0.\n\nIn this example, the art represented by this NFT has a square aspect ratio and uses the SVG format, so the same URI can be used for both the 'icon' and 'image' URIs. For NFTs that represent art in raster formats other aspect ratios, the 'icon' URI should point to a 400px by 400px or SVG icon representing the NFT.",
                   "uris": {
                     "icon": "ipfs://bafybeihnmh5bkbaspp3xfdanje74pekhsklhobzzraeyywq6gcpb3iuvey/0.svg",
+                    "image": "ipfs://bafybeihnmh5bkbaspp3xfdanje74pekhsklhobzzraeyywq6gcpb3iuvey/0.svg",
                     "web": "https://example.com/xamplz/0/details"
                   }
                 },
@@ -35,6 +36,7 @@
                   "description": "An NFT of this category with an on-chain commitment of 0x01 (VM number 1). Where appropriate, user interfaces may display the ticker symbol of NFTs matching this type as XAMPLZ-1.",
                   "uris": {
                     "icon": "ipfs://bafybeihnmh5bkbaspp3xfdanje74pekhsklhobzzraeyywq6gcpb3iuvey/1.svg",
+                    "image": "ipfs://bafybeihnmh5bkbaspp3xfdanje74pekhsklhobzzraeyywq6gcpb3iuvey/1.svg",
                     "web": "https://example.com/xamplz/1/details",
                     "custom-uri-identifier": "protocol://data-for-some-protocol"
                   }
@@ -44,6 +46,7 @@
                   "description": "An NFT of this category with an on-chain commitment of 0x02 (VM number 2). Where appropriate, user interfaces may display the ticker symbol of NFTs matching this type as XAMPLZ-2.",
                   "uris": {
                     "icon": "ipfs://bafybeihnmh5bkbaspp3xfdanje74pekhsklhobzzraeyywq6gcpb3iuvey/2.svg",
+                    "image": "ipfs://bafybeihnmh5bkbaspp3xfdanje74pekhsklhobzzraeyywq6gcpb3iuvey/2.svg",
                     "web": "https://example.com/another/path",
                     "another-uri-identifier": "protocol://data-for-that-protocol"
                   }
