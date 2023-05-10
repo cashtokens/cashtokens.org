@@ -10,7 +10,7 @@ sidebar_position: 1
         Maintainer: Jason Dreyzehner
         Status: Draft
         Initial Publication Date: 2022-10-31
-        Latest Revision Date: 2023-05-09
+        Latest Revision Date: 2023-05-10
         Version: 2.0.0-draft
 
 <details>
@@ -136,6 +136,8 @@ Chain resolution offers stronger security and better user experiences than DNS r
 A **zeroth-descendant transaction chain** – also known as an **authchain** – is a chain of transactions where the output at index `0` for each transaction is spent by the following transaction. In the context of authchains, the transaction output at index `0` is known as the transaction's **identity output**. Because all Bitcoin Cash transactions must have at least one output, every valid transaction has a single identity output.
 
 The first transaction in an authchain is referred to as the **authbase transaction**; authbase transactions have no distinguishing features, and any valid transaction can serve as an authbase transaction. The final transaction in an authchain is referred to as the **authhead transaction**. By definition, the identity output of the authhead transaction is unspent.
+
+![Bitauth Identities on Bitcoin Cash](./figures/bitauth-identities.svg)
 
 #### Authchain Resolution
 
