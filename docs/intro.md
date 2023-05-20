@@ -35,6 +35,6 @@ CashTokens are a built-in, optional feature of the Bitcoin Cash network. Token-s
 
 ## Learn More
 
-You can learn more about CashTokens by reviewing the [technical specification](/docs/spec/chip). The specification also includes appendices describing practical [contract usage examples](/docs/spec/examples), the [rationale behind various design decisions](/docs/spec/rationale), a summary of [prior art and alternatives](/docs/spec/alternatives), and the [consensus process](/docs/spec/stakeholders) by which CashTokens was developed and deployed.
+You can learn more about CashTokens by reviewing the [technical specification](/docs/spec/chip). The specification also includes appendices describing practical [contract usage examples](/docs/spec/examples), the [rationale behind various design decisions](/docs/spec/rationale), a summary of [prior art and alternatives](/docs/spec/alternatives), and the [consensus process](/docs/spec/stakeholders) by which the CashTokens upgrade was developed and deployed.
 
 This documentation also includes the [technical specification for Bitcoin Cash Metadata Registries](/docs/bcmr/chip), an application layer standard for sharing authenticated metadata between Bitcoin Cash wallets that allows user-recognizable names, descriptions, icons, ticker symbols, etc. to be associated with on-chain artifacts like identities, tokens, and contract systems.

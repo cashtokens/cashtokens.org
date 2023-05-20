@@ -53,14 +53,14 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      announcementBar: {
-        id: 'countdown',
-        content:
-          'CashTokens are part of the 2023 Bitcoin Cash Upgrade: <a target="_blank" rel="noopener noreferrer" href="https://cash.coin.dance/">Countdown</a>',
-        backgroundColor: '#fafbfc',
-        textColor: '#091E42',
-        isCloseable: true,
-      },
+      // announcementBar: {
+      //   id: 'countdown',
+      //   content:
+      //     'CashTokens are part of the 2023 Bitcoin Cash Upgrade: <a target="_blank" rel="noopener noreferrer" href="https://cash.coin.dance/">Countdown</a>',
+      //   backgroundColor: '#fafbfc',
+      //   textColor: '#091E42',
+      //   isCloseable: true,
+      // },
       colorMode: {
         defaultMode: 'light',
         disableSwitch: false,
@@ -114,6 +114,10 @@ const config = {
             title: 'Community',
             items: [
               {
+                label: 'Twitter',
+                href: 'https://twitter.com/CashTokensOrg',
+              },
+              {
                 label: 'Bitcoin Cash Research',
                 href: 'https://bitcoincashresearch.org/',
               },
@@ -128,10 +132,31 @@ const config = {
             ],
           },
           {
+            title: 'Development',
+            items: [
+              {
+                label: 'OpenTokenRegistry',
+                href: 'https://otr.cash/',
+              },
+              {
+                label: 'Chipnet Explorer',
+                href: 'https://chipnet.chaingraph.cash/',
+              },
+              {
+                label: '3xpl BCH Explorer',
+                href: 'https://3xpl.com/bitcoin-cash',
+              },
+              {
+                label: 'SalemKode BCH Explorer',
+                href: 'https://explorer.salemkode.com/',
+              },
+            ],
+          },
+          {
             title: 'Other Resources',
             items: [
               {
-                label: 'Why Bitcoin Cash?',
+                label: 'WhyBitcoinCash.com',
                 href: 'https://whybitcoincash.com/',
               },
               {
@@ -143,8 +168,8 @@ const config = {
                 href: 'https://bitcoincash.org/',
               },
               {
-                label: 'Chipnet Explorer',
-                href: 'https://chipnet.chaingraph.cash/',
+                label: 'BCH Podcast FAQ',
+                href: 'https://bitcoincashpodcast.com/faqs/Tech/what-is-cashtokens',
               },
             ],
           },

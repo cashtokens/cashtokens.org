@@ -31,6 +31,10 @@
   display: none;
 }
 
+.footer__bottom {
+  margin: 4em 0 2em;
+}
+
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
   --ifm-color-primary: #0AC18E;
