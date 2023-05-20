@@ -8,10 +8,10 @@ sidebar_position: 1
         Type: Standards
         Layer: Consensus
         Maintainer: Jason Dreyzehner
-        Status: Draft
+        Status: Final
         Initial Publication Date: 2022-02-22
-        Latest Revision Date: 2022-11-15
-        Latest Version: 2.2.1 (7552da2d)
+        Final Revision Date: 2023-5-20
+        Version: 2.2.2
 
 <details>
 
@@ -680,7 +680,7 @@ Software implementations should emphasize total supply in user interfaces for to
 
 #### Reserved Supply
 
-A token category's **reserved supply** is the sum – at a particular moment in time – of tokens held in reserve by the issuing entity. **This is the portion of the supply which the issuer represents as "not in circulation".**
+A token category's **reserved supply** or **unissued supply** is the sum – at a particular moment in time – of tokens held in reserve by the issuing entity. **This is the portion of the supply which the issuer represents as "not in circulation".**
 
 The reserved supply of a fungible token category can be computed by retrieving all UTXOs which contain token prefixes matching the category ID, removing provably-destroyed outputs (spent to `OP_RETURN` outputs), and summing the `amount`s held in prefixes which have either the `minting` or `mutable` capability.
 
@@ -802,7 +802,7 @@ Please see the following implementations for additional examples and test vector
       - P2SH32: [Merge Request !1556](https://gitlab.com/bitcoin-cash-node/bitcoin-cash-node/-/merge_requests/1556)
       - 65-byte TXs: [Merge Request !1598](https://gitlab.com/bitcoin-cash-node/bitcoin-cash-node/-/merge_requests/1598)
 - JavaScript/TypeScript
-  - [Libauth](https://github/com/bitauth/libauth) – An ultra-lightweight, zero-dependency JavaScript library for Bitcoin Cash.
+  - [Libauth](https://github.com/bitauth/libauth) – An ultra-lightweight, zero-dependency JavaScript library for Bitcoin Cash.
     - [Pull Request #98](https://github.com/bitauth/libauth/pull/98)
       - [Token encoding](https://github.com/bitauth/libauth/blob/43914ca973e90dfc84b6173dcace7233f8c2e05c/src/lib/message/transaction-encoding.ts#L395-L435)
       - [Token decoding](https://github.com/bitauth/libauth/blob/43914ca973e90dfc84b6173dcace7233f8c2e05c/src/lib/message/transaction-encoding.ts#L209-L324)
@@ -830,6 +830,9 @@ Thank you to the following contributors for reviewing and contributing improveme
 
 This section summarizes the evolution of this document.
 
+- **v2.2.2 – 2022-5-20**
+  - Mention unissued supply as an alternative term for reserved supply
+  - Mark CHIP as final
 - **v2.2.1 – 2022-11-15** ([`7552da2d`](https://github.com/bitjson/cashtokens/blob/7552da2dfad217aa5f4130f52d7d6cbbfeef7a23/readme.md))
   - Remove confusing recommendation about token-aware CashAddress usage ([#82](https://github.com/bitjson/cashtokens/issues/82))
   - Extract [`examples.md`](./examples.md), [`rationale.md`](./rationale.md), and [`alternatives.md`](./alternatives.md) for approachability
