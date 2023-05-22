@@ -43,6 +43,10 @@ const config = {
           // Remove this to remove the "edit this page" links.
           editUrl: 'https://github.com/cashtokens/cashtokens.org/tree/master/',
         },
+        gtag: {
+          trackingID: 'G-NCE7PCHMTK', // cspell:disable-line
+          anonymizeIP: true,
+        },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
