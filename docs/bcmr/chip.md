@@ -10,7 +10,7 @@ sidebar_position: 1
         Maintainer: Jason Dreyzehner
         Status: Draft
         Initial Publication Date: 2022-10-31
-        Latest Revision Date: 2023-05-10
+        Latest Revision Date: 2023-05-26
         Version: 2.0.0-draft
 
 <details>
@@ -165,40 +165,44 @@ To resolve a metadata registry that is published on chain, clients must first [r
 
 #### Metadata Registry Publication Outputs
 
-Chain-resolved registries are published using **metadata registry publication outputs**, data-carrier outputs that include the hash and – optionally – an HTTPS URL from which the registry can be downloaded.
+Chain-resolved registries are published using **metadata registry publication outputs**, data-carrier outputs that include the hash and – optionally – one or more `utf8`-encoded URIs from which the registry can be downloaded.
 
 The locking bytecode of publication outputs must conform to the following structure:
 
 ```
-OP_RETURN <'BCMR'> <hash> [<https_url>]
+OP_RETURN <'BCMR'> <hash> [<uri> <uri> ... <uri>]
 ```
 
-Metadata registry publication outputs are identified by the **locking bytecode prefix** `OP_RETURN <'BCMR'>` (`0x6a0442434d52`).
+Metadata registry publication outputs are identified by the **locking bytecode prefix** `OP_RETURN <'BCMR'>` (`0x6a0442434d52`). Following the locking bytecode prefix, the SHA-256 `hash` (encoded in `OP_SHA256` byte order<sup>1</sup>) of the registry contents must be pushed. Thereafter, any number of `utf8`-encoded URIs may be pushed to provide clients with multiple download options<sup>2</sup>.
 
 Every transaction can have **zero or one metadata registry publication output**; if multiple outputs share the required locking bytecode prefix, the first (the output at the lowest-value index) is considered the definitive publication output, and later outputs sharing the prefix must be ignored. (Note, even if the first matching output is malformed – e.g. it does not push a `hash` – later matching outputs should not be considered by clients.)
-
-##### IPFS Publication Outputs
-
-Publication outputs with only two pushed items (where the `<https_url>` is omitted) are **[IPFS](https://en.wikipedia.org/wiki/InterPlanetary_File_System) publication outputs**. For these outputs, the `hash` is a [binary-encoded IPFS Content Identifier (CID)](https://docs.ipfs.tech/concepts/content-addressing/#cid-conversion). Clients must fetch these registries using [IPFS](https://en.wikipedia.org/wiki/InterPlanetary_File_System).
-
-Clients without access to full IPFS nodes may use [HTTP Gateways](https://docs.ipfs.tech/reference/http/gateway/) to resolve IPFS-published registries. Clients using HTTP gateways must self-verify the response to confirm it matches the requested CID.
-
-##### HTTPS Publication Outputs
-
-Publication outputs with the third pushed item (`https_url`) are **HTTPS publication outputs**. For these outputs, the `hash` is the SHA-256 hash (encoded in `OP_SHA256` byte order<sup>1</sup>) of the registry contents, and the `https_url` is the [percent-encoded](https://en.wikipedia.org/wiki/Percent-encoding) URL from which the registry can be downloaded, excluding the `https://` protocol prefix<sup>2</sup>. It is recommended that `https_url` conform to the [Well-Known URI](#well-known-uri).
-
-After fetching a registry from the published `https_url`, clients must verify the response to confirm it matches the published SHA-256 `hash`.
-
-To avoid leaking connection information to registry hosts, clients may choose to download the registry via Tor or via a trusted proxy, VPN, or mirror service. Because the hash of the downloaded registry is verified, sources need not be trusted for registry integrity.
 
 <details>
 
 <summary>Notes</summary>
 
 1. This is the byte order produced/required by all BCH VM operations which employ SHA-256 (including `OP_SHA256` and `OP_HASH256`), the byte order used for outpoint transaction hashes in the P2P transaction format, and the byte order produced by most SHA-256 libraries. For reference, the genesis block header in this byte order is little-endian – `6fe28c0ab6f1b372c1a6a246ae63f74f931e8365e15a089c68d6190000000000` – and can be produced by this script: `<0x0100000000000000000000000000000000000000000000000000000000000000000000003ba3edfd7a7b12b27ac72c3e67768f617fc81bc3888a51323a9fb8aa4b1e5e4a29ab5f49ffff001d1dac2b7c> OP_HASH256`. (Note, this is the opposite byte order as is commonly used in user interfaces like block explorers.)
-2. For example, a registry hosted at `https://www.example.com/bcmr registry.json` with a hash of `0x6fe28c0ab6f1b372c1a6a246ae63f74f931e8365e15a089c68d6190000000000` would be encoded using the locking script: `OP_RETURN <'BCMR'> <0x6fe28c0ab6f1b372c1a6a246ae63f74f931e8365e15a089c68d6190000000000> <'www.example.com/bcmr%20registry.json'>` producing the locking bytecode: `0x6a0442434d52206fe28c0ab6f1b372c1a6a246ae63f74f931e8365e15a089c68d6190000000000247777772e6578616d706c652e636f6d2f62636d7225323072656769737472792e6a736f6e`.
+2. For example, a registry hosted at `https://example.com/.well-known/bitcoin-cash-metadata-registry.json` with a hash of `0x6fe28c0ab6f1b372c1a6a246ae63f74f931e8365e15a089c68d6190000000000` would be encoded using the locking script: `OP_RETURN <'BCMR'> <0x6fe28c0ab6f1b372c1a6a246ae63f74f931e8365e15a089c68d6190000000000> <'example.com'>` producing the locking bytecode: `0x6a0442434d52206fe28c0ab6f1b372c1a6a246ae63f74f931e8365e15a089c68d61900000000000b6578616d706c652e636f6d`.
 
 </details>
+
+##### Publication Output URIs
+
+Clients may select from any of the pushed URIs to download the registry referenced by a publication output. Following successful download, clients should verify that the hash of the downloaded registry matches the published `hash`.
+
+At minimum, all clients must support the [HTTPS](https://en.wikipedia.org/wiki/HTTPS) and [IPFS](https://en.wikipedia.org/wiki/InterPlanetary_File_System) protocols within publication outputs. Additional protocols like `dns`, `ftp`, `git`, `magnet`, `rsync`, Tor (using `.onion` addresses), `ssh`, etc. may optionally be supported by some clients. Publication outputs with no URIs are understood to require that clients request the provided `hash` via a content-addressed resolution protocol, but client support for this behavior is not required (i.e. clients must only support `ipfs://`-prefixed IPFS URIs).
+
+###### HTTPS Publication Outputs
+
+URIs without a protocol prefix must be assumed to use HTTPS, and HTTPS URIs without a file path (the URL segment following the hostname, beginning with `/`) must be assumed to use the [Well-Known URI](#well-known-uri) for that domain. E.g. `https://example.com/.well-known/bitcoin-cash-metadata-registry.json` is encoded as `<'example.com'>` (`0x0b6578616d706c652e636f6d`), while a registry hosted at the root of `https://test.example.com/` (rather than at `https://test.example.com/.well-known/bitcoin-cash-metadata-registry.json`) is encoded as `<'test.example.com/'>` (`0x11746573742e6578616d706c652e636f6d2f`).
+
+To avoid leaking connection information to registry hosts, clients may choose to download the registry via Tor or via a trusted proxy, VPN, or mirror service. Because the hash of the downloaded registry is verified, sources need not be trusted for registry integrity.
+
+###### IPFS Publication Outputs
+
+All clients must support registry download via IPFS. Clients without access to full IPFS nodes may use one or more [HTTP Gateways](https://docs.ipfs.tech/reference/http/gateway/). Gateways need not be trusted, as the downloaded registry may be verified using the published hash.
+
+IPFS URIs must include the `ipfs://` prefix. It is recommended that IPFS-distributed registries be published as a single file rather than as part of a larger archive (see [Publication of Static Data](#publication-of-static-data)).
 
 ### Metadata Registry JSON Schema
 
@@ -510,7 +514,7 @@ The 4-character minimum recommended length for fungible tokens is derived from w
 
 By establishing maximum recommended base symbol lengths, this standard ensures wider compatibility across user interfaces; base symbols remaining within this range have the maximum likelihood of being displayed without truncation in most user interfaces.
 
-The 6-character minimum recommended length for NFTs is chosen to reduce overlap with base symbols of fungible tokens (which can be expected to prefer 4 or 5-character base symbols). NFTs tend to be more specialized and less commonly used as exchange media, appearing in fewer trading pairs and user interfaces requiring symbol brevity. In fact, NFT base symbols are rarely used without full qualification, e.g. `XAMPL-2354`, `BRANDNAME-100`, etc. Given this fundamental difference from fungible tokens, longer base symbols tend to be advantageous for NFTs, where clarity and differentiation (e.g. in keyword search) are more valuable than brevity in character length. Following this recommendation, many NFT collections can be visually distinguished from fungible tokens purely on the basis of symbol length.
+The 6-character minimum recommended length for NFTs is chosen to reduce overlap with base symbols of fungible tokens (which can be expected to prefer 4 or 5-character base symbols). NFTs tend to be more specialized and less commonly used as exchange media, appearing in fewer trading pairs and user interfaces requiring symbol brevity. In fact, NFT base symbols are rarely used without full qualification, e.g. `XAMPLE-2354`, `BRANDNAME-100`, etc. Given this fundamental difference from fungible tokens, longer base symbols tend to be advantageous for NFTs, where clarity and differentiation (e.g. in keyword search) are more valuable than brevity in character length. Following this recommendation, many NFT collections can be visually distinguished from fungible tokens purely on the basis of symbol length.
 
 The 13-character maximum recommended length for base symbols is derived from the minimum recommended length of fungible token base symbols and from the distribution of word lengths in the English language. In existing markets, relatively-long base symbols are commonly used to embed trading pairs. For example, `NAMEUSDEUR` might refer to an interest in `NAME` that earns a share in the profits of `NAME`'s `USD/EUR` market. For these use cases, a 13-character base symbol can accommodate a 5-character entity symbol associated with two other 4-character base symbols, e.g. `XAMPLCORNGOLD`. Additionally, a 13-character maximum base symbol best accommodates readable symbols in the english language; approximately 96.7% of English words occupy 13 characters or less, with rapidly diminishing improvement in coverage beyond 13 characters<sup>2</sup>.
 
@@ -554,7 +558,8 @@ This section summarizes the evolution of this document.
   - Standardized parsing transaction to eliminate undefined behavior ([#7](https://github.com/bitjson/chip-bcmr/pull/7))
   - Converted `identities` from an array to an object ([#7](https://github.com/bitjson/chip-bcmr/pull/7))
   - Expanded guidelines for issuers and clients
-  - Defined NFT ticker symbols ([#8](https://github.com/bitjson/chip-bcmr/pull/7))
+  - Defined NFT ticker symbols ([#8](https://github.com/bitjson/chip-bcmr/pull/8))
+  - Simplified publication output encoding ([#10](https://github.com/bitjson/chip-bcmr/issues/10))
   - Added registry examples
 - **v1.0.0 – 2022-10-31** ([`5b24b0ec`](https://github.com/bitjson/chip-bcmr/blob/5b24b0ec93cf9316222ab2ea2e2ffe8a9f390b12/readme.md))
   - Initial publication
