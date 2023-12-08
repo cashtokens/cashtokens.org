@@ -477,8 +477,9 @@ The full ticker symbol for a particular NFT is the concatenation of it's `TokenC
 | `81` (VM number `-1`)              | `XAMPL-X81`       |
 | `ff` (VM number `-127`)            | `XAMPL-XFF`       |
 | `8000` (VM number `128`)           | `XAMPL-128`       |
+| `ff00` (VM number `255`)           | `XAMPL-255`       |
 | `ff7f` (VM number `32767`)         | `XAMPL-32767`     |
-| `ff7f` (VM number `32767`)         | `XAMPL-32767`     |
+| `8080` (VM number `-128`)          | `XAMPL-X8080`     |
 | `ff80` (VM number `-255`)          | `XAMPL-XFF80`     |
 | `ffff` (VM number `-32767`)        | `XAMPL-XFFFF`     |
 
