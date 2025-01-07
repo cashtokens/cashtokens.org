@@ -118,8 +118,8 @@ const config = {
             title: 'Community',
             items: [
               {
-                label: 'Twitter',
-                href: 'https://twitter.com/CashTokensOrg',
+                label: '@CashTokens on X.com',
+                href: 'https://x.com/CashTokens',
               },
               {
                 label: 'Bitcoin Cash Research',
