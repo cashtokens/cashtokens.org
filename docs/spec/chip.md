@@ -70,7 +70,8 @@ Each of these commitment types require the presence of a _trusted private key_. 
 
 By providing a commitment primitive that can be used directly by contracts, the Bitcoin Cash contract system can support advanced, decentralized applications without increasing transaction or block validation costs.
 
-<details><summary>Notes</summary>
+<details>
+<summary>Notes</summary>
 
 1. Signature aggregation schemes can enable contracts to issue some commitments with reduced trust (e.g. by requiring a quorum of always-online entities to join a multiparty signing process), but these schemes typically require active coordination, carefully-designed participation incentives, fallback strategies, and other significant fixed costs (e.g. always-online servers). In practice, few such systems are able to maintain sufficient traction to continue functioning, and notably, forcing a contract to rely on these systems is arbitrary and wasteful (in terms of network bandwidth and validation costs) when their purpose is simply to attest to a result already produced by that contract.
 
