@@ -53,7 +53,27 @@ const config = {
       }),
     ],
   ],
+  themes: [
+    [
+      require.resolve("@easyops-cn/docusaurus-search-local"),
+      /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
+      ({
+        // ... Your options.
+        // `hashed` is recommended as long-term-cache of index file is possible.
+        hashed: true,
 
+        // For Docs using Chinese, it is recomended to set:
+        // language: ["en", "zh"],
+
+        // Customize the keyboard shortcut to focus search bar (default is "mod+k"):
+        // searchBarShortcutKeymap: "s", // Use 'S' key
+        // searchBarShortcutKeymap: "ctrl+shift+f", // Use Ctrl+Shift+F
+
+        // If you're using `noIndex: true`, set `forceIgnoreNoIndex` to enable local index:
+        // forceIgnoreNoIndex: true,
+      }),
+    ],
+  ],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
