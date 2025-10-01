@@ -40,7 +40,7 @@ The CHIP maintainer has contacted the following stakeholders for approval of thi
 
 Hello,
 
-This is a formal request for approval from {{Organization}} regarding the May 2023 upgrade of Bitcoin Cash (BCH).
+This is a formal request for approval from `{{Organization}}` regarding the May 2023 upgrade of Bitcoin Cash (BCH).
 
 CHIP-2022-02-CashTokens has achieved the Cash Improvement Proposal (CHIP) milestones required to be locked in on November 15, 2022 and activated on May 15, 2023.
 
@@ -50,11 +50,11 @@ Support for the CashTokens upgrade is available in the following open-source sof
 - Indexers: Chaingraph, Fulcrum
 - Project & Libraries: Bitauth IDE, Electron Cash, Libauth.
 
-The CHIP contributors believe {{Organization}} is an important stakeholder in the Bitcoin Cash ecosystem. **Please respond to the following question by 12:00 UTC on November 14, 2022. Non-responses will be considered "Abstain (Neutral)".**
+The CHIP contributors believe `{{Organization}}` is an important stakeholder in the Bitcoin Cash ecosystem. **Please respond to the following question by 12:00 UTC on November 14, 2022. Non-responses will be considered "Abstain (Neutral)".**
 
 <blockquote>
 
-Does {{Organization}} approve of activating CHIP-2022-02-CashTokens in the May 2023 Upgrade to Bitcoin Cash (BCH)?
+Does `{{Organization}}` approve of activating CHIP-2022-02-CashTokens in the May 2023 Upgrade to Bitcoin Cash (BCH)?
 
 - Yes (Approve)
 - No (Disapprove), or
