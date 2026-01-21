@@ -192,6 +192,10 @@ const config = {
                 href: 'https://bitcoincash.org/',
               },
               {
+                label: 'WhatIsBitcoin.Cash',
+                href: 'https://minisatoshi.cash',
+              },
+              {
                 label: 'BCH Podcast FAQ',
                 href: 'https://bitcoincashpodcast.com/faqs/Tech/what-is-cashtokens',
               },
